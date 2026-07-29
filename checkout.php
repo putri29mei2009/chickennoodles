@@ -1,0 +1,170 @@
+<?php
+require_once 'config.php';
+
+$cart_items = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
+
+// If cart is empty, redirect to cart page
+if (empty($cart_items)) {
+    $_SESSION['message'] = "Keranjang Anda kosong, tidak dapat melakukan checkout.";
+    header('Location: user_cart.php');
+    exit;
+}
+
+$total_amount = 0;
+foreach ($cart_items as $item) {
+    $total_amount += $item['price'] * $item['quantity'];
+}
+
+$customer_name = '';
+$customer_address = '';
+$customer_phone = '';
+$errors = [];
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $customer_name = htmlspecialchars(trim($_POST['customer_name']));
+    $customer_address = htmlspecialchars(trim($_POST['customer_address']));
+    $customer_phone = htmlspecialchars(trim($_POST['customer_phone']));
+
+    if (empty($customer_name)) {
+        $errors[] = "Nama pelanggan harus diisi.";
+    }
+    if (empty($customer_address)) {
+        $errors[] = "Alamat harus diisi.";
+    }
+    if (empty($customer_phone)) {
+        $errors[] = "Nomor telepon harus diisi.";
+    }
+
+    if (empty($errors)) {
+        // Start a transaction for atomicity
+        $conn->begin_transaction();
+        try {
+            // Insert into orders table
+            $stmt = $conn->prepare("INSERT INTO orders (customer_name, customer_address, customer_phone, total_amount, order_status) VALUES (?, ?, ?, ?, 'pending')");
+            $stmt->bind_param("sssd", $customer_name, $customer_address, $customer_phone, $total_amount);
+            $stmt->execute();
+            $order_id = $conn->insert_id;
+
+            // Insert into order_items table
+            $stmt_item = $conn->prepare("INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
+            foreach ($cart_items as $item) {
+                $product_id = $item['id'];
+                $quantity = $item['quantity'];
+                $price_at_order = $item['price']; // Use price from cart session
+                $stmt_item->bind_param("iiid", $order_id, $product_id, $quantity, $price_at_order);
+                $stmt_item->execute();
+            }
+
+            $conn->commit();
+            unset($_SESSION['cart']); // Clear the cart after successful order
+            $_SESSION['order_id'] = $order_id;
+            $_SESSION['message'] = "Pesanan Anda berhasil dibuat!";
+            header('Location: order_confirmation.php');
+            exit;
+
+        } catch (Exception $e) {
+            $conn->rollback();
+            $errors[] = "Gagal membuat pesanan: " . $e->getMessage();
+            $_SESSION['message'] = "Terjadi kesalahan saat membuat pesanan. Mohon coba lagi.";
+        }
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Chickennoodles</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <a href="index.php" class="logo-link">
+                <span class="logo-emoji">🍜</span> <span class="logo-text">Chickennoodles Syafira</span>
+            </a>
+        </div>
+    </header>
+
+    <nav class="navbar">
+        <div class="container">
+            <ul>
+                <li><a href="index.php">Beranda</a></li>
+                <li><a href="user_cart.php">🛒 Keranjang</a></li>
+                <li><a href="checkout.php">Checkout</a></li>
+
+
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <h2>Informasi Pengiriman dan Pembayaran</h2>
+
+        <?php if (!empty($errors)): ?>
+            <div style="background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                <ul>
+                    <?php foreach ($errors as $error): ?>
+                        <li><?php echo $error; ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($_SESSION['message'])): ?>
+            <p style="background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; padding: 10px; border-radius: 5px; margin-bottom: 15px;"><?php echo $_SESSION['message']; unset($_SESSION['message']); ?></p>
+        <?php endif; ?>
+
+        <div class="checkout-summary">
+            <h3>Ringkasan Pesanan Anda</h3>
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Produk</th>
+                        <th>Kuantitas</th>
+                        <th>Harga</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($cart_items as $item): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($item['name']); ?></td>
+                            <td><?php echo $item['quantity']; ?></td>
+                            <td>Rp <?php echo number_format($item['price'], 2, ',', '.'); ?></td>
+                            <td>Rp <?php echo number_format($item['price'] * $item['quantity'], 2, ',', '.'); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <div class="cart-total" style="text-align: right; margin-top: 15px;">
+                <strong>Total Pembayaran: Rp <?php echo number_format($total_amount, 2, ',', '.'); ?></strong>
+            </div>
+        </div>
+
+        <form action="checkout.php" method="post">
+            <h3>Detail Pengiriman</h3>
+            <label for="customer_name">Nama Lengkap:</label>
+            <input type="text" id="customer_name" name="customer_name" value="<?php echo htmlspecialchars($customer_name); ?>" required>
+
+            <label for="customer_address">Alamat Lengkap:</label>
+            <textarea id="customer_address" name="customer_address" rows="4" required><?php echo htmlspecialchars($customer_address); ?></textarea>
+
+            <label for="customer_phone">Nomor Telepon:</label>
+            <input type="text" id="customer_phone" name="customer_phone" value="<?php echo htmlspecialchars($customer_phone); ?>" required>
+
+            <button type="submit" class="btn btn-primary">Konfirmasi Pesanan</button>
+        </form>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; <?php echo date('Y'); ?> Chickennoodles. Semua Hak Dilindungi.</p>
+        </div>
+    </footer>
+</body>
+</html>
+<?php
+$conn->close();
+?>

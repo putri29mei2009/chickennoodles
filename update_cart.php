@@ -1,0 +1,42 @@
+<?php
+require_once 'config.php';
+
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
+
+// Handle POST requests for updating quantities or removing items
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (isset($_POST['remove_item'])) {
+        $product_id_to_remove = intval($_POST['remove_item']);
+        if (isset($_SESSION['cart'][$product_id_to_remove])) {
+            unset($_SESSION['cart'][$product_id_to_remove]);
+            $_SESSION['message'] = "Produk berhasil dihapus dari keranjang.";
+        }
+    } elseif (isset($_POST['update_cart']) && isset($_POST['quantities'])) {
+        foreach ($_POST['quantities'] as $product_id => $quantity) {
+            $product_id = intval($product_id);
+            $quantity = intval($quantity);
+
+            if (isset($_SESSION['cart'][$product_id])) {
+                if ($quantity > 0) {
+                    $_SESSION['cart'][$product_id]['quantity'] = $quantity;
+                } else {
+                    // Remove item if quantity is 0 or less
+                    unset($_SESSION['cart'][$product_id]);
+                }
+            }
+        }
+        $_SESSION['message'] = "Keranjang berhasil diperbarui.";
+    }
+}
+
+// Handle GET requests for clearing the entire cart
+if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['action']) && $_GET['action'] == 'clear_cart') {
+    unset($_SESSION['cart']);
+    $_SESSION['message'] = "Keranjang telah dikosongkan.";
+}
+
+header('Location: user_cart.php');
+exit;
+?>

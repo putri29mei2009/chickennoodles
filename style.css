@@ -1,0 +1,390 @@
+:root {
+    --primary-color: #E69A00; /* Darker Orange */
+    --secondary-color: #FFECB3; /* Light Creamy Orange */
+    --accent-color: #FFA500; /* Standard Orange */
+    --light-accent-color: #FFD700; /* Gold - Lighter Yellowish-Orange */
+    --text-color: #36220B; /* Dark Brown for readability */
+    --background-color: #FFF8E1; /* Very Light Cream */
+    --card-background: #FFFFFF; /* White for cards */
+}
+
+body {
+    font-family: 'Poppins', sans-serif; /* Modern font choice */
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.7; /* Slightly increased line height for readability */
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+.container {
+    max-width: 1200px; /* Slightly wider container for more modern feel */
+    margin: 0 auto;
+    padding: 0 25px; /* Increased padding */
+}
+
+/* Header Styling */
+.header {
+    background-color: var(--primary-color);
+    color: white; /* Keep white for general header text that isn't the logo */
+    padding: 15px 0; /* Adjusted padding */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Softer, more pronounced shadow */
+}
+
+.header .container {
+    display: flex; /* Use flexbox for logo alignment */
+    justify-content: center; /* Center the logo */
+    align-items: center;
+}
+
+.logo-link {
+    display: flex; /* Flex to align emoji and text */
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo-emoji {
+    font-size: 2.8em; /* Large size for emoji */
+    margin-right: 12px; /* Space between emoji and text */
+    color: var(--accent-color); /* Yellowish-orange for emoji */
+}
+
+.logo-text {
+    font-size: 2.5em; /* Size for the text */
+    font-weight: 700;
+    color: var(--text-color); /* Dark brown for text */
+}
+
+/* Navbar Styling */
+.navbar {
+    background-color: var(--text-color); /* Darker brown for navbar */
+    padding: 12px 0; /* Slightly increased padding */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Softer shadow */
+}
+
+.navbar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.navbar ul li {
+    margin: 0 20px; /* More spacing between nav items */
+}
+
+.navbar ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 5px 0;
+    transition: color 0.3s ease, transform 0.2s ease; /* Added transform for subtle hover */
+}
+
+.navbar ul li a:hover {
+    color: var(--accent-color);
+    transform: translateY(-2px); /* Subtle lift on hover */
+}
+
+/* All headings brown */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-color); /* Dark brown for all headings */
+    margin-bottom: 18px; /* Slightly more margin below headings */
+}
+
+/* Welcome Section */
+.welcome-section {
+    background-color: var(--secondary-color); /* Light cream/orange background */
+    color: var(--text-color);
+    padding: 70px 25px; /* More generous padding */
+    text-align: center;
+    margin-bottom: 50px; /* More margin below section */
+    box-shadow: inset 0 -4px 8px rgba(0,0,0,0.05); /* Softer inner shadow */
+}
+
+.welcome-section h2 {
+    font-size: 3em; /* Larger heading */
+    margin-bottom: 20px;
+    color: var(--text-color); /* Dark brown for welcome section heading */
+}
+
+.welcome-section p {
+    font-size: 1.3em; /* Larger paragraph text */
+    max-width: 800px;
+    margin: 0 auto 15px auto;
+}
+
+/* Global h2 style, overridden by welcome-section h2 */
+h2 {
+    color: var(--text-color); /* Dark brown for all h2s outside welcome-section */
+    margin-bottom: 30px; /* More margin below h2 */
+    text-align: center;
+    font-size: 2.5em; /* Adjusted global h2 size */
+}
+
+a {
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--light-accent-color);
+    text-decoration: underline;
+}
+
+button, .button {
+    display: inline-block;
+    background-color: var(--accent-color);
+    color: white;
+    padding: 14px 30px; /* Larger buttons */
+    border: none;
+    border-radius: 30px; /* More rounded buttons */
+    cursor: pointer;
+    font-size: 1.05em;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Softer shadow for buttons */
+}
+
+button:hover, .button:hover {
+    background-color: var(--light-accent-color);
+    transform: translateY(-3px); /* More pronounced lift on hover */
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+input[type="text"],
+input[type="number"],
+input[type="password"],
+input[type="email"],
+textarea {
+    width: calc(100% - 24px); /* Account for padding and border */
+    padding: 12px; /* More padding in input fields */
+    margin-bottom: 18px;
+    border: 1px solid var(--secondary-color);
+    border-radius: 10px; /* More rounded input fields */
+    box-sizing: border-box;
+    font-size: 1.05em;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+textarea:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(255,165,0,0.2); /* Focus glow - replaced rgba(var(--accent-color-rgb, 255,165,0), 0.2); for broader browser compatibility */
+    outline: none;
+}
+
+input[type="submit"] {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 14px 30px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+input[type="submit"]:hover {
+    background-color: var(--text-color);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+/* Product Grid Styling */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Larger min-width for cards */
+    gap: 40px; /* More spacing between cards */
+    margin-top: 40px;
+}
+
+.product-card {
+    background-color: var(--card-background);
+    border-radius: 12px; /* More rounded card corners */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08); /* Lighter, more modern shadow */
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card:hover {
+    transform: translateY(-7px); /* More pronounced lift */
+    box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+}
+
+.product-card img {
+    width: 100%;
+    height: 220px; /* Slightly larger image height */
+    object-fit: cover;
+    display: block;
+}
+
+.product-card-content {
+    padding: 25px; /* More padding inside card content */
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product-card-content h3 {
+    color: var(--text-color);
+    font-size: 1.6em; /* Slightly larger title */
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+.product-card-content p {
+    font-size: 1em; /* Slightly larger paragraph text */
+    margin-bottom: 18px;
+    flex-grow: 1;
+}
+
+.product-card-content .price {
+    font-size: 1.3em; /* Slightly larger price text */
+    font-weight: 700;
+    color: var(--accent-color);
+    margin-bottom: 18px;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 25px;
+    border-radius: 10px; /* More rounded table corners */
+    overflow: hidden;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+}
+
+table th, table td {
+    padding: 15px 20px; /* More padding in table cells */
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0; /* Softer border */
+}
+
+table th {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.95em;
+}
+
+table tr:first-child th:first-child {
+    border-top-left-radius: 10px;
+}
+table tr:first-child th:last-child {
+    border-top-right-radius: 10px;
+}
+
+table tr:nth-child(even) {
+    background-color: #fcfcfc; /* Very subtle different background */
+}
+
+table tr:hover {
+    background-color: #f5f5f5; /* Softer hover effect */
+}
+
+/* Messages */
+.message {
+    padding: 15px 25px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    color: white;
+    font-weight: 500;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.message.success {
+    background-color: #5cb85c; /* Updated green */
+    border: 1px solid #4cae4c;
+}
+
+.message.error {
+    background-color: #d9534f; /* Updated red */
+    border: 1px solid #d43f3a;
+}
+
+/* Footer Styling */
+.footer {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 30px 0; /* More padding */
+    margin-top: 70px;
+    box-shadow: 0 -4px 8px rgba(0,0,0,0.1);
+}
+
+.footer p {
+    margin: 0;
+    font-size: 0.95em;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .navbar ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .navbar ul li {
+        margin: 8px 0; /* More spacing for mobile nav */
+    }
+
+    .product-grid {
+        grid-template-columns: 1fr; /* Single column on smaller screens */
+        gap: 30px;
+    }
+
+    .welcome-section {
+        padding: 50px 20px;
+    }
+
+    .welcome-section h2 {
+        font-size: 2.2em;
+    }
+
+    .welcome-section p {
+        font-size: 1.1em;
+    }
+
+    h2 {
+        font-size: 2em;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-emoji {
+        font-size: 2.2em;
+    }
+    .logo-text {
+        font-size: 1.8em;
+    }
+    .welcome-section h2 {
+        font-size: 1.8em;
+    }
+    .welcome-section p {
+        font-size: 1em;
+    }
+    h2 {
+        font-size: 1.8em;
+    }
+    .container {
+        padding: 0 15px;
+    }
+}

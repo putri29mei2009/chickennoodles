@@ -1,0 +1,84 @@
+<?php
+require_once 'config.php';
+
+// Fetch products from the database
+$sql = "SELECT id, name, description, price, image FROM products ORDER BY id ASC";
+$result = $conn->query($sql);
+
+$products = [];
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $products[] = $row;
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chickennoodles - Menu Utama</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <a href="index.php" class="logo-link">
+                <span class="logo-emoji">🍜</span> <span class="logo-text">Chickennoodles Syafira</span>
+            </a>
+        </div>
+    </header>
+
+    <nav class="navbar">
+        <div class="container">
+            <ul>
+                <li><a href="index.php">Beranda</a></li>
+                <li><a href="user_cart.php">🛒 Keranjang</a></li>
+                <li><a href="checkout.php">Checkout</a></li>
+
+            </ul>
+        </div>
+    </nav>
+
+    <section class="welcome-section">
+        <div class="container">
+            <h2>Selamat Datang di Chickennoodles!</h2>
+            <p>Nikmati hidangan mie ayam lezat kami yang dibuat dengan bahan-bahan pilihan.</p>
+            <p>Pesan sekarang dan rasakan kenikmatan sejati!</p>
+        </div>
+    </section>
+
+    <main class="container">
+        <h2>Menu Kami</h2>
+        <div class="product-grid">
+            <?php if (!empty($products)): ?>
+                <?php foreach ($products as $product): ?>
+                    <div class="product-card">
+                        <img src="assets/img/<?php echo htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                        <div class="product-card-content">
+                            <h3><?php echo htmlspecialchars($product['name']); ?></h3>
+                            <p><?php echo htmlspecialchars($product['description']); ?></p>
+                            <p class="price">Rp <?php echo number_format($product['price'], 2, ',', '.'); ?></p>
+                            <form action="add_to_cart.php" method="post">
+                                <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                                <button type="submit" class="btn">🛒 Tambah ke Keranjang</button>
+                            </form>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>Belum ada produk yang tersedia.</p>
+            <?php endif; ?>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; <?php echo date('Y'); ?> Chickennoodles. Semua Hak Dilindungi.</p>
+        </div>
+    </footer>
+</body>
+</html>
+<?php
+$conn->close();
+?>

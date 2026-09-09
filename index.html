@@ -1,17 +1,3 @@
-<?php
-require_once 'config.php';
-
-// Fetch products from the database
-$sql = "SELECT id, name, description, price, image FROM products ORDER BY id ASC";
-$result = $conn->query($sql);
-
-$products = [];
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $products[] = $row;
-    }
-}
-?>
 <!DOCTYPE html>
 <html lang="id">
 <head>

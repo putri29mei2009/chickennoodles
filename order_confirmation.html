@@ -25,12 +25,11 @@
 
         <div style="background-color: #fff; padding: 20px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 20px;">
             <h3>Detail Pesanan #CN-1001</h3>
-            <p><strong>Nama Pelanggan:</strong> Pembeli Demo</p>
-            <p><strong>Alamat Pengiriman:</strong> Jl. Contoh No. 123, Jakarta</p>
-            <p><strong>Nomor Telepon:</strong> 08123456789</p>
+            <p><strong>Nama Pelanggan:</strong> <span id="res-nama">-</span></p>
+            <p><strong>Alamat Pengiriman:</strong> <span id="res-alamat">-</span></p>
+            <p><strong>Nomor Telepon:</strong> <span id="res-telepon">-</span></p>
             <p><strong>Total Pembayaran:</strong> Rp 27.000</p>
             <p><strong>Status Pesanan:</strong> Menunggu Konfirmasi</p>
-            <p><strong>Tanggal Pesanan:</strong> 9 September 2026</p>
         </div>
 
         <h3>Item Pesanan:</h3>
@@ -69,5 +68,13 @@
             <a href="index.html" class="btn" style="display: inline-block; padding: 10px 20px; background-color: #e67e22; color: white; text-decoration: none; border-radius: 5px;">Kembali ke Beranda</a>
         </div>
     </main>
+
+    <!-- Script JavaScript untuk membaca data form -->
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('nama')) document.getElementById('res-nama').textContent = params.get('nama');
+        if (params.get('alamat')) document.getElementById('res-alamat').textContent = params.get('alamat');
+        if (params.get('telepon')) document.getElementById('res-telepon').textContent = params.get('telepon');
+    </script>
 </body>
 </html>

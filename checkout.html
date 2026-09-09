@@ -20,23 +20,23 @@
         <h2>Informasi Pengiriman dan Pembayaran</h2>
 
         <div style="display: flex; gap: 30px; flex-wrap: wrap; margin-top: 20px;">
-            <!-- Form Input Pembeli -->
-            <form action="order_confirmation.html" style="flex: 1; min-width: 300px;">
+            <!-- Form Input Pembeli (dikirim lewat method GET agar bisa dibaca JavaScript di order_confirmation.html) -->
+            <form action="order_confirmation.html" method="GET" style="flex: 1; min-width: 300px;">
                 <h3 style="margin-bottom: 15px;">Detail Pengiriman</h3>
                 
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 5px;">Nama Lengkap:</label>
-                    <input type="text" placeholder="Masukkan nama lengkap Anda" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                    <input type="text" name="nama" placeholder="Masukkan nama lengkap Anda" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
                 </div>
                 
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 5px;">Alamat Lengkap:</label>
-                    <textarea rows="4" placeholder="Masukkan alamat pengiriman" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;"></textarea>
+                    <textarea name="alamat" rows="4" placeholder="Masukkan alamat pengiriman" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;"></textarea>
                 </div>
 
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 5px;">Nomor Telepon:</label>
-                    <input type="tel" placeholder="Contoh: 08123456789" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                    <input type="tel" name="telepon" placeholder="Contoh: 08123456789" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
                 </div>
 
                 <button type="submit" class="btn" style="width: 100%; padding: 12px; background-color: #e67e22; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 16px;">Konfirmasi Pesanan</button>
